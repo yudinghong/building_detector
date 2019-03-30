@@ -16,13 +16,15 @@ def histMatch(srcimg, tarimg, ftype='img', save=False):
 		srcChannel_c = srcChannel.flatten()
 		tarChannel_c = tarChannel.flatten()
 		MN = srcChannel_c.shape[0]
-		srcHist, _ = np.histogram(srcChannel_c, level, density=True)
-		tarHist, _ = np.histogram(tarChannel_c, level, density=True)
+		srcHist, _ = np.histogram(srcChannel_c, level)
+		tarHist, _ = np.histogram(tarChannel_c, level)
+		srcHist = srcHist.astype(np.float)
+		tarHist = tarHist.astype(np.float)
 		stemp = 0
 		ttemp = 0
 		for i in range(level):
-			stemp += srcHist[i]
-			ttemp += tarHist[i]
+			stemp += srcHist[i] / MN
+			ttemp += tarHist[i] / MN
 			srcHist[i] = stemp
 			tarHist[i] = ttemp
 		table = np.zeros(level)
@@ -33,7 +35,7 @@ def histMatch(srcimg, tarimg, ftype='img', save=False):
 				if np.fabs(tarhist - srchist) < minVal:
 					minVal = np.fabs(tarhist - srchist)
 					index = tindex
-			print(index, sindex)
+			print(sindex, index)
 			table[sindex] = index
 		return table[srcChannel]
 	
@@ -50,8 +52,8 @@ def histMatch(srcimg, tarimg, ftype='img', save=False):
 
 if __name__ == '__main__':
 	import cv2 as cv
-	src = cv.imread('./luoxing/1/1_126_376.jpg', 1)
-	tar = cv.imread('./luoxing/0/1_126_376.jpg', 1)
+	src = cv.imread('./luoxing/1/1_127_019.jpg', 1)
+	tar = cv.imread('./luoxing/0/1_127_019.jpg', 1)
 	img = histMatch(src, tar)
 	print(img.shape)
 	cv.imwrite('result.jpg', img)
