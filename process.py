@@ -16,7 +16,7 @@ class Preprocess():
 
 	def preprocess(self):
 		for one in self.__namelist:
-			histMatch(self.__newpath+'/'+one+self.__ftype, self.__newpath+'/'+one+self.__ftype, ftype='file', save=True)
+			histMatch(self.__newpath+'/'+one+self.__ftype, self.__oldpath+'/'+one+self.__ftype, ftype='file', save=True)
 
 	def __setConf(self, confPath):
 		from config import Config
