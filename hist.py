@@ -16,8 +16,8 @@ def histMatch(srcimg, tarimg, ftype='img', save=False):
 		srcChannel_c = srcChannel.flatten()
 		tarChannel_c = tarChannel.flatten()
 		MN = srcChannel_c.shape[0]
-		srcHist, _ = np.histogram(srcChannel_c, level)
-		tarHist, _ = np.histogram(tarChannel_c, level)
+		srcHist, _ = np.histogram(srcChannel_c, level, (0, 255))
+		tarHist, _ = np.histogram(tarChannel_c, level, (0, 255))
 		srcHist = srcHist.astype(np.float)
 		tarHist = tarHist.astype(np.float)
 		stemp = 0
@@ -27,6 +27,8 @@ def histMatch(srcimg, tarimg, ftype='img', save=False):
 			ttemp += tarHist[i] / MN
 			srcHist[i] = stemp
 			tarHist[i] = ttemp
+			# print(ttemp)
+		# exit()
 		table = np.zeros(level)
 		for sindex, srchist in enumerate(srcHist):
 			index = 0
@@ -35,8 +37,8 @@ def histMatch(srcimg, tarimg, ftype='img', save=False):
 				if np.fabs(tarhist - srchist) < minVal:
 					minVal = np.fabs(tarhist - srchist)
 					index = tindex
-			print(sindex, index)
 			table[sindex] = index
+		# exit()
 		return table[srcChannel]
 	
 	sB, sG, sR = src[:,:,0], src[:,:,1], src[:,:,2]
